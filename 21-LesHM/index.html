@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>Домашняя работа по 21 лекции</title>
+        <link rel="stylesheet" type="text/css" href="main.css">
+        <script src="main.js"></script>
+    </head>
+    <body>
+        <h3>Форма добавления информации о студенте</h3>
+        <form action="/adding-result" method="post">
+            <fieldset>
+                <legend> Данные студента </legend>
+                <p>
+                    <label for="nameStudent">Имя студента: </label>
+                    <input type="text" class="input-text" id="nameStudent">
+                </p>
+                <p>
+                    <label for="dateBirth">Дата рождения: </label>
+                    <input type="date" class="input-date" id="dateBirth">
+                </p>
+                <p>
+                    <label for="gender">Пол: </label>
+                    <select name="gender" class="select-gender" id="nameGender">
+                        <option>Выберите пол</option>
+                        <option>Мужской</option>
+                        <option>Женский</option>    
+                    </select>    
+                </p>
+                <button id="btnAdd" onclick="addRowStudentsTable('tblStudents');">Добавить студента</button> 
+            </fieldset>
+        </form>
+
+        <table>
+            <caption><h3>Таблица студентов</h3></caption>
+            <thead>
+              <tr>
+                <th>Имя студента</th>
+                <th>Пол</th>
+                <th>Дата рождения</th>
+                <th>Возраст</th>
+              </tr>
+            </thead>
+            <tbody id="tblStudents">
+              <tr>
+                <td>Алексей Алексевич Алексеев</td>
+                <td>Мужской</td>
+                <td>01.01.2000</td>
+                <td>22</td>
+              </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="3">Средний возраст студента: </td>
+                    <td id="ageAverage">22</td>
+                </tr>
+            </tfoot>            
+          </table>
+    </body>
+</html>

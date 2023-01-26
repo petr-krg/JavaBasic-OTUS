@@ -1,0 +1,45 @@
+form {
+	width: 450px;
+	border-color: steelblue;
+}
+form label {
+	width: 200px;
+	float: left;
+}
+form select.select-gender {
+	width: 200px;
+	background-color: #fff;
+} 
+form input.input-text,
+form input.input-date {
+	width: 200px;
+} 
+table {
+	border: 1px solid steelblue;
+	width: 650px;
+	border-collapse: collapse;
+	margin-bottom: 300px;
+}
+table caption {
+	color: #000000;
+	text-align: left;
+}
+table th {
+	padding: 5px;
+	border: 1px solid steelblue;
+	font-weight: normal;
+	text-align: left;
+}
+table td {
+	padding: 5px;
+	border: 1px solid steelblue;
+}
+table thead th, table thead td {
+	background: #fff;
+}
+table tbody th, table tbody td {
+	background: #fff;
+}
+table tfoot th, table tfoot td {
+	background: #fff;
+}
