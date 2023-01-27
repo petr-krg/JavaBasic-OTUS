@@ -1,41 +1,44 @@
 package krg.petr.otusjava;
 
-import java.util.*;
+import krg.petr.otusjava.helpers.HelperUtils;
+
+import java.util.ArrayList;
+
+import java.util.List;
 
 public class Bank {
-    public static void main( String[] args ) {
+    public static void main(String[] args) {
 
         final int MAX_CLIENTS = 10;
+        final int MIN_AGE = 10;
+        final int MAX_AGE = 85;
 
-        ListAccounts accountsList = new ListAccounts();
-        ListClients clientsList = new ListClients();
+        HelperUtils helper = new HelperUtils();
 
-        HelperUtils helper = new HelperUtils(0, 0);
+        ListClients listClients = new ListClients();
+        ListAccounts listAccounts = new ListAccounts();
 
-        for (int i = 0; i < MAX_CLIENTS; i++) {
-            clientsList.add(new BankClient(helper.generateClientID(),
-                                           helper.generateRandomFIO(),
-                                           helper.generateClientAge(10, 85)));
+        for (int i = 0; i < MAX_CLIENTS; i++){
+            int balance = helper.generateBalance();
+            BankClient bankClient = new BankClient(helper.generateRandomFIO(),
+                                                   helper.generateClientAge(MIN_AGE, MAX_AGE));
+            listClients.add(bankClient);
+
+            BankAccount bankAccount = new BankAccount(bankClient, balance);
+            listAccounts.add(bankAccount);
+
+            listAccounts.addToAccountMap(bankClient, new ArrayList<>(List.of(bankAccount)));
+            listClients.addToClientMap(bankAccount, bankClient);
         }
 
+        listClients.showAllClients("Bank clients list");
+        listAccounts.showAllAccounts("Bank account list");
+
         for (int i = 0; i < MAX_CLIENTS; i++) {
-            int clientIndex = new Random().nextInt(MAX_CLIENTS);
-            accountsList.add(new BankAccount(helper.generateAccountID(),
-                                             clientsList.getClientID(clientIndex),
-                                             helper.generateBalance()));
-        }
-
-        clientsList.showAllClients("Bank clients list");
-        accountsList.showAllAccounts("Bank accounts list");
-
-        accountsList.fillAccountsByClientID();
-
-        for (int i = 0; i < 3; i++) {
-            int clientIndex = new Random().nextInt(MAX_CLIENTS);
-            accountsList.findAccounts(clientsList.getClient(clientIndex));
-            accountsList.findAccountByHashMap(clientsList.getClient(clientIndex));
+            // тестируем поиск по всем акаунтам и клиентам с выводом в консоль
+            listAccounts.findAccountByClient(listClients.getClient(i));
+            listClients.findClientByAccount(listAccounts.getAccounts(i));
         }
 
     }
 }
-

@@ -3,28 +3,27 @@ package krg.petr.otusjava;
 import java.util.List;
 
 public class BankAccount {
-    private final int accountID;
-    private final int clientID;
+    private BankClient bankClient;
     private final int accountBalance;
-
-
-    public BankAccount(int acID, int clID, int acBalance) {
-        this.accountID = acID;
-        this.clientID = clID;
-        this.accountBalance = acBalance;
+    public BankAccount(BankClient client, int balance) {
+        this.bankClient = client;
+        this.accountBalance = balance;
     }
 
-    public int getAccountID() {
-        return this.accountID;
+    public BankClient getBankClient () {
+
+        return this.bankClient;
     }
-    public int getClientID() {
-        return this.clientID;
-    }
+
     public int getAccountBalance() {
-        return this.accountBalance;
+
+        return accountBalance;
     }
 
-    public List<BankAccount> findAccount(BankClient client) {
-        return null;
+    public String getFullAccountData () {
+        return this.bankClient.getClientName() + " " +
+               this.bankClient.getClientAge() + " " +
+               getAccountBalance();
     }
+
 }
