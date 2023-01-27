@@ -4,11 +4,16 @@ import java.util.*;
 
 public class ListAccounts {
     private List<BankAccount> listAccounts;
-    private Map<Integer, List<Integer>> accountsByClientID;
+    private Map<BankClient, List<BankAccount>> accountsByClient;
    public ListAccounts() {
 
         this.listAccounts = new ArrayList<>();
-        this.accountsByClientID = new HashMap<>();
+        this.accountsByClient = new HashMap<>();
+    }
+
+    public BankAccount getAccounts(int elementIndex) {
+
+       return this.listAccounts.get(elementIndex);
     }
 
     public void add(BankAccount account) {
@@ -16,125 +21,67 @@ public class ListAccounts {
         this.listAccounts.add(account);
     }
 
-    public void findAccountByHashMap(BankClient client) {
+    public void addToAccountMap(BankClient client, List<BankAccount> account) {
+
+       this.accountsByClient.put(client, account);
+    }
+
+    public void findAccountByClient(BankClient client) {
 
        String title = "[HashMap] Для клиента: " + client.getClientName();
-       List<Integer> idAccounts = this.accountsByClientID.get(client.getClientID());
-       showHashAccounts(title, idAccounts);
+
+       List<BankAccount> foundAccount = accountsByClient.get(client);
+
+       showHashAccounts(title, foundAccount);
     }
 
-    public void findAccounts(BankClient client) {
-
-        String title = client.getClientName();
-        List<BankAccount> foundList = new ArrayList<>();
-
-        Iterator<BankAccount> iterator = this.listAccounts.iterator();
-        while (iterator.hasNext()) {
-            BankAccount account = iterator.next();
-            if (account.getClientID() == client.getClientID()) {
-                foundList.add(account);
-            }
-        }
-
-        showAllAccounts(title, foundList);
-    }
-
-    public void fillAccountsByClientID() {
-       List<Integer> idAccounts;
-
-       for (BankAccount account : this.listAccounts) {
-           idAccounts = this.accountsByClientID.get(account.getClientID());
-           if (idAccounts == null) {
-               idAccounts = new ArrayList<>();
-               idAccounts.add(account.getAccountID());
-           } else {
-               idAccounts.add(account.getAccountID());
-           }
-           this.accountsByClientID.put(account.getClientID(), idAccounts);
-       }
-
-        System.out.println("hashMap " + this.accountsByClientID);
-/*
-       for (BankAccount account : this.listAccounts) {
-           this.accountsByClientID.computeIfAbsent(account.getClientID(), k -> new ArrayList<>()).add(account);
-       }
-*/
-    }
-
-    public void updateAccount() {
-
-    }
-
-    public void deleteAccount() {
-
-    }
-
-    public void showHashAccounts(String title, List<Integer> foundAccounts) {
+    public void showHashAccounts(String title, List<BankAccount> foundAccounts) {
 
         if (foundAccounts == null) {
             System.out.printf("%n%s%n", title + " не найдено счетов!");
             return;
         }
 
-        String alignFormat = "| %-4d | %-4d | %-8d |%n";
+        String alignFormat = "| %-32s | %-4d | %-8d |%n";
 
         System.out.printf("%n%s%n", title);
-        System.out.format("+------+------+----------+%n");
-        System.out.format("| ID   | clID | Balance  |%n");
-        System.out.format("+------+------+----------+%n");
+        System.out.format("+----------------------------------+------+----------+%n");
+        System.out.format("| Client name                      | Age  | Balance  |%n");
+        System.out.format("+----------------------------------+------+----------+%n");
 
-        Iterator<Integer> iterator = foundAccounts.iterator();
+        Iterator<BankAccount> iterator = foundAccounts.iterator();
         while (iterator.hasNext()) {
-            int idAccount = iterator.next();
+            BankAccount accounts = iterator.next();
             for (BankAccount account : this.listAccounts) {
-                if (account.getAccountID() == idAccount) {
-                    System.out.format(alignFormat, account.getAccountID(),
-                                                   account.getClientID(),
+                if (account.equals(accounts)) {
+                    System.out.format(alignFormat, account.getBankClient().getClientName(),
+                                                   account.getBankClient().getClientAge(),
                                                    account.getAccountBalance());
                 }
             }
         }
 
-        System.out.format("+------+------+----------+%n");
+        System.out.format("+----------------------------------+------+----------+%n");
     }
 
     public void showAllAccounts(String title) {
 
-        String alignFormat = "| %-4d | %-4d | %-8d |%n";
+        String alignFormat = "| %-32s | %-4d | %-8d |%n";
 
         System.out.printf("%n%s%n", title);
-        System.out.format("+------+------+----------+%n");
-        System.out.format("| ID   | clID | Balance  |%n");
-        System.out.format("+------+------+----------+%n");
+
+        System.out.format("+----------------------------------+------+----------+%n");
+        System.out.format("| Client name                      | Age  | Balance  |%n");
+        System.out.format("+----------------------------------+------+----------+%n");
 
         Iterator<BankAccount> iterator = this.listAccounts.iterator();
         while (iterator.hasNext()) {
             BankAccount account = iterator.next();
-            System.out.format(alignFormat, account.getAccountID(), account.getClientID(), account.getAccountBalance());
+            System.out.format(alignFormat, account.getBankClient().getClientName(),
+                                           account.getBankClient().getClientAge(),
+                                           account.getAccountBalance());
         }
 
-        System.out.format("+------+------+----------+%n");
-    }
-
-    public void showAllAccounts(String title, List<BankAccount> found) {
-
-        if ((found == null) || (found.isEmpty())) {
-            System.out.printf("%n%s%n", "Для клиента: " + title + " не найдено счетов!");
-            return;
-        }
-
-        System.out.printf("%n%s%n", "Для клиента " + title + " найдено счетов: ");
-        String alignFormat = "| %-4d | %-4d | %-8d |%n";
-        System.out.format("+------+------+----------+%n");
-        System.out.format("| ID   | clID | Balance  |%n");
-        System.out.format("+------+------+----------+%n");
-
-        Iterator<BankAccount> iterator = found.iterator();
-        while (iterator.hasNext()) {
-            BankAccount account = iterator.next();
-            System.out.format(alignFormat, account.getAccountID(), account.getClientID(), account.getAccountBalance());
-        }
-
-        System.out.format("+------+------+----------+%n");
+        System.out.format("+----------------------------------+------+----------+%n%n");
     }
 }
