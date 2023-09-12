@@ -1,2 +1,2 @@
-# JavaSpecializationCourse
+# JavaBasicCourse
 Java specialization course from OTUS
